@@ -1,4 +1,4 @@
-//taken from https://github.com/softhax/college-labs/blob/master/sem3/dsc/prog05.c
+
 
 #include <stdio.h>
 #include <stdlib.h>
