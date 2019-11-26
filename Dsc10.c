@@ -1,88 +1,104 @@
-// original taken from https://github.com/softhax/college-labs/blob/master/sem3/dsc/prog10.c
-
-#include <stdio.h>
-#include <stdlib.h>
-
-void maxheapify(int arr[],int n);
-int extractmax(int arr[]);
-void buildheap(int arr[]);
-int n;
+//Priority Queue with heap:
+ 
+ 
+#include<stdio.h>
+#include<malloc.h>
+void insert();
+void del();
+void display();
+ 
+struct node
+{
+int priority;
+int info;
+struct node *next;
+}*start=NULL,*q,*temp,*new;
+ 
+ 
+typedef struct node N;
 int main()
 {
-
-int i,a[10],ch;
-for(;;)
+int ch;
+clrscr();
+do
 {
-
-    printf("\n1-Build heap\n2-Extract max\n3-exit\n");
-    scanf("%d",&ch);
-    switch(ch)
-    {
-
-    case 1: printf("read value of n\n");
-            scanf("%d",&n);
-            printf("enter the elements\n");
-            for(i=1;i<=n;i++)
-                scanf("%d",&a[i]);
-            buildheap(a);
-            printf("heap after insertion is \n");
-            for(i=1;i<=n;i++)
-                printf("%d ",a[i]);
-            break;
-    case 2: printf("max element retrieved is %d \n",extractmax(a));
-            printf("heap after deletion is \n");
-            for(i=1;i<=n;i++)
-                printf("%d ",a[i]);
-            break;
-    case 3: exit(0);
-}
-}
-return 0;
-}
-
-void buildheap(int a[])
+printf("\n[1] INSERTION\t[2] DELETION\t[3] DISPLAY [4] EXIT\t:");
+scanf("%d",&ch);
+switch(ch)
 {
-    int i;
-    for(i=n/2;i>=1;i--)
-        maxheapify(a,i);
+case 1:insert();
+break;
+case 2:del();
+break;
+case 3:display();
+break;
+case 4:
+break;
 }
-
-void maxheapify(int a[],int i)
+}
+while(ch<4);
+}
+ 
+void insert()
 {
-    int left=2*i,right=2*i+1,largest;
-
-    if(left<=n	&&  a[left]>a[i])
-        largest=left;
-    else
-	largest=i;
-
-    if(right<=n	&&  a[right]>a[largest])
-        largest = right;
-
-    if(largest!=i)
-    {
-        int temp=a[i];
-        a[i]=a[largest];
-        a[largest]=temp;
-        maxheapify(a,largest);
-    }
-}
-
-int extractmax(int a[])
+int item,itprio;
+new=(N*)malloc(sizeof(N));
+printf("ENTER THE ELT.TO BE INSERTED :\t");
+scanf("%d",&item);
+printf("ENTER ITS PRIORITY :\t");
+scanf("%d",&itprio);
+new->info=item;
+new->priority=itprio;
+new->next=NULL;
+if(start==NULL )
 {
-
-    int max;
-    if(n==0)
-    {
-        printf("empty heap\n");
-        return -1;
-    }
-    else
-    {
-        max=a[1];
-        a[1]=a[n];
-        n=n-1;
-        maxheapify(a,1);
-        return max;
-    }
+//new->next=start;
+start=new;
 }
+else if(start!=NULL&&itprio<=start->priority)
+{  new->next=start;
+start=new;
+}
+else
+{
+q=start;
+while(q->next != NULL && q->next->priority<=itprio)
+{q=q->next;}
+new->next=q->next;
+q->next=new;
+}
+}
+ 
+void del()
+{
+if(start==NULL)
+{
+printf("\nQUEUE UNDERFLOW\n");
+ 
+}
+else
+{
+new=start;
+printf("\nDELETED ITEM IS %d\n",new->info);
+start=start->next;
+//free(start);
+}
+}
+ 
+void display()
+{
+temp=start;
+if(start==NULL)
+printf("QUEUE IS EMPTY\n");
+else
+{
+printf("QUEUE IS:\n");
+if(temp!=NULL)
+for(temp=start;temp!=NULL;temp=temp->next)
+{
+printf("\n%d priority =%d\n",temp->info,temp->priority);
+//temp=temp->next;
+}
+}
+}
+ 
